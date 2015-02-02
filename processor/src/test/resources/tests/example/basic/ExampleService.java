@@ -1,4 +1,4 @@
-package com.thatjoemoore.utils.hystrix.annotations.processor.example.basic;
+package tests.example.basic;
 
 import com.thatjoemoore.utils.hystrix.annotations.HysCommand;
 import com.thatjoemoore.utils.hystrix.annotations.HysCommands;
@@ -6,7 +6,7 @@ import com.thatjoemoore.utils.hystrix.annotations.HysCommands;
 /**
  *
  */
-@HysCommands(generatedPackage = "com.thatjoemoore.utils.hystrix.annotations.processor.example.basic.commands")
+@HysCommands(generatedPackage = "tests.example.basic.commands")
 public interface ExampleService {
 
     @HysCommand

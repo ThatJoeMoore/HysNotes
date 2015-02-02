@@ -165,7 +165,7 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         Blueprint.TargetMethod tm = new Blueprint.TargetMethod(ex);
         tm.include = true;
         String prefix = cfg.prefix;
-        String cmdName = tm.name.substring(0, 1).toUpperCase() + tm.name.substring(1);
+        String cmdName = tm.name.substring(0, 1).toUpperCase() + tm.name.substring(1) + "Command";
         tm.className = alts(name, prefix + cmdName);
         tm.group = alts(group, cfg.group);
         tm.originatingElements = new Element[]{elem, ex};

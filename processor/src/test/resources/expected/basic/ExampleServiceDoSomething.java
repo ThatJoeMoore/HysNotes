@@ -1,10 +1,11 @@
-package com.thatjoemoore.utils.hystrix.annotations.processor.example.basic.commands;
+package tests.example.basic.commands;
 
 
 import com.netflix.hystrix.HystrixCommand;
-import com.netflix.hystrix.HystrixCommand.Setter;
 import com.netflix.hystrix.HystrixCommandGroupKey;
-import com.thatjoemoore.utils.hystrix.annotations.processor.example.basic.ExampleService;
+import tests.example.basic.ExampleService;
+
+import java.lang.String;
 public class ExampleServiceDoSomething extends HystrixCommand<Integer> {
 
   private final ExampleService ___delegate___;
@@ -16,5 +17,7 @@ public class ExampleServiceDoSomething extends HystrixCommand<Integer> {
   }
 
   @Override
-  protected Integer run() throws Exception {return this.___delegate___.doSomething(this.input);}
+  protected Integer run() throws Exception {
+      return this.___delegate___.doSomething(this.input);
+  }
 }

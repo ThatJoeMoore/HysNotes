@@ -6,13 +6,14 @@ import com.thatjoemoore.utils.annotations.AnalyzeAndWriteProcessor;
 import com.thatjoemoore.utils.hystrix.annotations.HysCommand;
 import com.thatjoemoore.utils.hystrix.annotations.HysCommands;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.Nullable;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import java.text.DateFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +22,16 @@ import java.util.Set;
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class HystrixProcessor extends AnalyzeAndWriteProcessor<List<Blueprint>> {
+
+    private final DateFormat generatedDateFormat;
+
+    public HystrixProcessor() {
+        this(null);
+    }
+
+    public HystrixProcessor(@Nullable DateFormat generatedDateFormat) {
+        this.generatedDateFormat = generatedDateFormat;
+    }
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
@@ -49,7 +60,8 @@ public class HystrixProcessor extends AnalyzeAndWriteProcessor<List<Blueprint>> 
 
     @Override
     protected Writer<List<Blueprint>> getWriter() {
-        return new HysWriter();
+//        return new HysWriter();
+        return new HysWriter2(generatedDateFormat);
     }
 
 }

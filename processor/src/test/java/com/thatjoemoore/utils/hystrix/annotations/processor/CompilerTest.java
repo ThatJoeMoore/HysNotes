@@ -84,6 +84,9 @@ public abstract class CompilerTest {
             char[] expArray = expected.contents;
             char[] genArray = generated.contents;
 
+//            System.out.println(new String(expArray));
+//            System.out.println(new String(genArray));
+
             assertEquals("Generated file is not the same length as expected file", expected.contents.length, generated.contents.length);
             for (int i = 0, len = expected.contents.length; i < len; i++) {
                 if (expArray[i] != genArray[i]) {
@@ -136,10 +139,10 @@ public abstract class CompilerTest {
         int current = 0;
         for (final ListIterator<String> iterator = lines.listIterator(); iterator.hasNext(); ) {
             final String each = iterator.next();
-            final String trimmed = each.trim();
-            if (trimmed.isEmpty()) {
+            if (each.trim().isEmpty()) {
                 continue;
             }
+            final String trimmed = each.replaceAll("\\s+", " ");
 
             final int start = current;
             current += trimmed.length();

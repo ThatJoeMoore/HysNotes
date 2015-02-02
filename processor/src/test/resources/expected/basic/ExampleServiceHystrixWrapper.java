@@ -1,7 +1,9 @@
-package com.thatjoemoore.utils.hystrix.annotations.processor.example.basic.commands;
+package tests.example.basic.commands;
 
 
-import com.thatjoemoore.utils.hystrix.annotations.processor.example.basic.ExampleService;
+import tests.example.basic.ExampleService;
+import java.lang.InterruptedException;
+import java.lang.String;
 
 public class ExampleServiceHystrixWrapper
     implements ExampleService {
