@@ -1,7 +1,7 @@
 package tests.example.basic;
 
 import com.google.testing.compile.JavaFileObjects;
-import com.thatjoemoore.utils.hystrix.annotations.processor.HystrixProcessor;
+import com.thatjoemoore.hystrix.annotations.processor.HystrixProcessor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
