@@ -244,6 +244,7 @@ class HysWriter2 extends AbstractWriter<List<Blueprint>> {
         spec.addMethod(MethodSpec.constructorBuilder()
                         .addParameter(delegateParam)
                         .addStatement("this.$N = $N", delegate, delegateParam)
+                        .addModifiers(PUBLIC)
                         .build()
         );
 

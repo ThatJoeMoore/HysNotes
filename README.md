@@ -66,10 +66,12 @@ public interface RemoteService {
 }
 
 ```
+[source](processor/src/test/resources/tests/example/basic/RemoteService.java)
 
-[link](processor/src/test/resources/tests/example/basic/RemoteService.java)
-
-This will generate three classes in your.company: RemoteServiceDoSomethingCommand, RemoteServiceSomethingElseCommand, and RemoteServiceHystrixWrapper.
+This will generate three classes in your.company:
+[RemoteServiceDoSomethingCommand](processor/src/test/resources/tests/example/basic/RemoteServiceDoSomethingCommand.java),
+[RemoteServiceSomethingElseCommand](processor/src/test/resources/tests/example/basic/RemoteServiceSomethingElseCommand.java),
+and [RemoteServiceHystrixWrapper](processor/src/test/resources/tests/example/basic/RemoteServiceHystrixWrapper.java).
 
 RemoteServiceDoSomethingCommand and RemoteServiceSomethingElseCommand are both implementations of HystrixCommand which will delegate to
 RemoteService.doSomething and RemoteService.somethingElse, respectively. Both have constructors which accept an instance of RemoteService, followed by their

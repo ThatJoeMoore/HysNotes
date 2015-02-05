@@ -4,7 +4,7 @@ import com.google.auto.common.MoreElements;
 import com.thatjoemoore.hystrix.annotations.*;
 import com.thatjoemoore.utils.annotations.AbstractAnalyzer;
 import com.thatjoemoore.utils.annotations.ElementsExt;
-import com.thatjoemoore.utils.hystrix.annotations.*;
+import com.thatjoemoore.hystrix.annotations.*;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;

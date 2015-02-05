@@ -29,12 +29,12 @@ public class BasicCompilerUnitTest extends CompilerTest {
         for (Diagnostic<? extends JavaFileObject> each : result.diagnostics) {
             System.out.println(each);
         }
-        echoFile(result, "tests/example/basic/commands/ExampleServiceDoSomethingCommand.java", "Do Something Command");
-        echoFile(result, "tests/example/basic/commands/ExampleServiceHystrixWrapper.java", "Wrapper Class");
+        echoFile(result, "tests/example/basic/commands/RemoteServiceDoSomethingCommand.java", "Do Something Command");
+        echoFile(result, "tests/example/basic/commands/RemoteServiceHystrixWrapper.java", "Wrapper Class");
         assertTrue(result.result);
 
-        result.assertSameContent("/expected/basic/ExampleServiceDoSomething.java", "tests/example/basic/commands/ExampleServiceDoSomethingCommand.java");
-        result.assertSameContent("/expected/basic/ExampleServiceHystrixWrapper.java", "tests/example/basic/commands/ExampleServiceHystrixWrapper.java");
+        result.assertSameContent("/expected/basic/ExampleServiceDoSomething.java", "tests/example/basic/commands/RemoteServiceDoSomethingCommand.java");
+        result.assertSameContent("/expected/basic/RemoteServiceHystrixWrapper.java", "tests/example/basic/commands/RemoteServiceHystrixWrapper.java");
 
 //        echoFile(result, "com/test/TestFixtureMapper.java", "Mapper");
 //        echoFile(result, "edu/byu/gaat/db/mappers/EmbeddableMapper.java", "Embeddable Mapper");

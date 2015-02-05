@@ -43,8 +43,9 @@ public class BasicInterfaceTest {
                 .processedWith(new HystrixProcessor(fakeDateFormat))
                 .compilesWithoutError()
         .and().generatesSources(
-                JavaFileObjects.forResource("tests/example/basic/commands/ExampleServiceDoSomethingCommand.java")
-                , JavaFileObjects.forResource("tests/example/basic/commands/ExampleServiceHystrixWrapper.java")
+                JavaFileObjects.forResource("tests/example/basic/RemoteServiceDoSomethingCommand.java")
+                , JavaFileObjects.forResource("tests/example/basic/RemoteServiceSomethingElseCommand.java")
+                , JavaFileObjects.forResource("tests/example/basic/RemoteServiceHystrixWrapper.java")
         );
     }
 
