@@ -1,5 +1,7 @@
 = HysNotes
-=== Making Hystrix simple
+:toc:
+
+*_Making Hystrix simple_*
 
 There's no doubt about it: Netflix's https://github.com/Netflix/Hystrix[Hystrix] is awesome! However, migrating an existing codebase to it
 can be painful and repetitive, requiring you to wrap every external service call in it's own command subclass.
@@ -8,7 +10,6 @@ HysNotes (name subject to change) aims to make this easier by generating these c
 If you're designing with interfaces and separate implementations (and you should be!), it will even provide a Hystrix-based implementation
 of your interface, giving you a drop-in solution for taking advantage of Hystrix's fault-tolerance capabilities.
 
-:toc:
 
 = Project Status
 Subject to change at any time.  Here's what we want done before 1.0:
