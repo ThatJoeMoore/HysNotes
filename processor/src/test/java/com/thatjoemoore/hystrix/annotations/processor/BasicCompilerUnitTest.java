@@ -24,7 +24,7 @@ public class BasicCompilerUnitTest extends CompilerTest {
     @Test
     public void basic() throws IOException {
         CompilationResult result = compile(
-                "src/test/java/com/thatjoemoore/utils/hystrix/annotations/processor/example/basic/ExampleService.java"
+                "src/test/java/com/thatjoemoore/utils/hystrix/annotations/processor/example/basic/RemoteService.java"
         );
         for (Diagnostic<? extends JavaFileObject> each : result.diagnostics) {
             System.out.println(each);

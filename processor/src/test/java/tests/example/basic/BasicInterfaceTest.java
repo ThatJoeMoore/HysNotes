@@ -37,7 +37,7 @@ public class BasicInterfaceTest {
 
     @Test
     public void simpleInterface() {
-        JavaFileObject fileObject = JavaFileObjects.forResource("tests/example/basic/ExampleService.java");
+        JavaFileObject fileObject = JavaFileObjects.forResource("tests/example/basic/RemoteService.java");
         assert_().about(javaSource())
                 .that(fileObject)
                 .processedWith(new HystrixProcessor(fakeDateFormat))
