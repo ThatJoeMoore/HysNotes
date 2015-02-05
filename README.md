@@ -67,7 +67,7 @@ public interface RemoteService {
 
 ```
 
-(processor/src/test/resources/tests/example/basic/RemoteService.java)[link]
+[link](processor/src/test/resources/tests/example/basic/RemoteService.java)
 
 This will generate three classes in your.company: RemoteServiceDoSomethingCommand, RemoteServiceSomethingElseCommand, and RemoteServiceHystrixWrapper.
 
