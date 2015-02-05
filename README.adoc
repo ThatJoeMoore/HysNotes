@@ -14,16 +14,16 @@ of your interface, giving you a drop-in solution for taking advantage of Hystrix
 == Project Status
 Subject to change at any time.  Here's what we want done before 1.0:
 
-* [*] Basic interface-based usage
-* [ ] Generate wrappers for non-interface classes (possibly working, untested)
-* [ ] Automatically handle declared (throws) exceptions.
-* [ ] Support for fallbacks (begun)
-* [ ] Allow for IoC wiring of fallbacks, commands, etc.
-** [ ] Spring
-** [ ] Guice
-** [ ] HK2? Does anybody actually use this without Jersey-Spring?
-** [ ] Dagger? Should we even try without knowing exactly what's coming with Dagger 2?
-***    It may be worth it, just to get support for Android right now, without waiting for Dagger 2
-* [ ] Thread pool customization
-* [ ] Other Hystrix configuration stuff
+- [*] Basic interface-based usage
+- [ ] Generate wrappers for non-interface classes (possibly working, untested)
+- [ ] Automatically handle declared (throws) exceptions.
+- [ ] Support for fallbacks (begun)
+- [ ] Allow for IoC wiring of fallbacks, commands, etc.
+- [ ] Spring
+- [ ] Guice
+- [ ] HK2? Does anybody actually use this without Jersey-Spring?
+- [ ] Dagger? Should we even try without knowing exactly what's coming with Dagger 2?
+-     It may be worth it, just to get support for Android right now, without waiting for Dagger 2
+- [ ] Thread pool customization
+- [ ] Other Hystrix configuration stuff
 
