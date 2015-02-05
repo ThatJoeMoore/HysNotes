@@ -1,5 +1,6 @@
 = HysNotes
 :toc:
+:icons: font
 
 *_Making Hystrix simple_*
 
