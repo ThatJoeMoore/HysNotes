@@ -66,7 +66,7 @@ public interface RemoteService {
 }
 
 ```
-[source](processor/src/test/resources/tests/example/basic/RemoteService.java)
+<sup>[source](processor/src/test/resources/tests/example/basic/RemoteService.java)</sup>
 
 This will generate three classes in your.company:
 [RemoteServiceDoSomethingCommand](processor/src/test/resources/tests/example/basic/RemoteServiceDoSomethingCommand.java),
@@ -113,6 +113,7 @@ out the real implementation in favor of the Hystrix-enhanced one.  For advanced 
 In addition to interfaces, HysNotes is capable of generating one-off commands and wrappers around concrete methods:
 
 ```java
+
 @HysCommands
 public class ClassLevel {
 
@@ -121,7 +122,9 @@ public class ClassLevel {
     }
 
 }
-```[source](processor/src/test/resources/tests/example/nointerface/ClassLevel.java)
+
+```
+<sup>[source](processor/src/test/resources/tests/example/nointerface/ClassLevel.java)</sup>
 
 
 #Configuring Output
