@@ -125,8 +125,6 @@ public class ClassLevel {
 
 ```
 <sup>[source](processor/src/test/resources/tests/example/nointerface/ClassLevel.java)</sup>
-
-
 #Configuring Output
 Most of the time, the output of this generation is more than sufficient. However, maybe you want it to be special. Maybe
 you don't like my auto-generated command names. Maybe you want things to live in a different package.  Well, guess what!
