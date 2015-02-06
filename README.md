@@ -106,8 +106,31 @@ So now, you can invoke your remote service like so:
 
 ```
 
-This is especially powerful when used in conjuction with some form of Inversion of Control container, where you can easily swap
+This is especially powerful when used in conjunction with some form of Inversion of Control container, where you can easily swap
 out the real implementation in favor of the Hystrix-enhanced one.  For advanced IoC usage, see the section that doesn't exist yet.
+
+#Look, ma, no interfaces!
+In addition to interfaces, HysNotes is capable of generating one-off commands and wrappers around concrete methods:
+
+```java
+@HysCommands
+public class ClassLevel {
+
+    public String sayHi() {
+        return "Hello!";
+    }
+
+}
+```[source](processor/src/test/resources/tests/example/nointerface/ClassLevel.java)
+
+
+#Configuring Output
+Most of the time, the output of this generation is more than sufficient. However, maybe you want it to be special. Maybe
+you don't like my auto-generated command names. Maybe you want things to live in a different package.  Well, guess what!
+We can do that!
+
+##Class-level
+@HysCommands allows you to configure the
 
 #Advanced Interfaces
 

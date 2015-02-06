@@ -9,6 +9,7 @@ import com.thatjoemoore.utils.annotations.TypesExt;
 
 import javax.annotation.Generated;
 import javax.annotation.Nullable;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
@@ -129,10 +130,7 @@ class HysWriter2 extends AbstractWriter<List<Blueprint>> {
         JavaFile jf = JavaFile.builder(blueprint.packageName, spec.build())
                 .skipJavaLangImports(true).build();
 
-        System.out.println("===============> " + jf.typeSpec.name);
-
-        jf.writeTo(System.out);
-        System.out.println();
+        log(jf);
 
         JavaFileObject file = filer().createSourceFile(getFileName(blueprint, method), method.originatingElements);
 
@@ -140,6 +138,12 @@ class HysWriter2 extends AbstractWriter<List<Blueprint>> {
             jf.writeTo(w);
         }
         return ClassName.get(jf.packageName, jf.typeSpec.name);
+    }
+
+    private static void log(JavaFile file) throws IOException {
+        System.out.println("=================> " + file.typeSpec.name);
+        file.writeTo(System.out);
+        System.out.println();
     }
 
     private static Args analyzeArgs(List<Blueprint.Param> args) {
@@ -231,11 +235,15 @@ class HysWriter2 extends AbstractWriter<List<Blueprint>> {
                 .addJavadoc("The object that actually implements the logic")
                 .build();
 
+        boolean hasInterface = blueprint.baseElement.getKind() == ElementKind.INTERFACE;
+
         TypeSpec.Builder spec = TypeSpec.classBuilder(blueprint.className)
-                .addSuperinterface(target)
                 .addAnnotation(getGenerated())
                 .addOriginatingElement(blueprint.baseElement)
                 .addModifiers(PUBLIC);
+        if (hasInterface) {
+            spec.addSuperinterface(target);
+        }
 
         spec.addField(delegate);
 
@@ -250,7 +258,7 @@ class HysWriter2 extends AbstractWriter<List<Blueprint>> {
 
         for (Blueprint.TargetMethod method : blueprint.methods) {
             ClassName command = commands.get(method);
-            MethodSpec methodSpec = writeIfaceMethod(method, blueprint, delegate, command);
+            MethodSpec methodSpec = writeIfaceMethod(method, blueprint, delegate, command, hasInterface);
             if (methodSpec != null) {
                 spec.addMethod(methodSpec);
             }
@@ -261,20 +269,25 @@ class HysWriter2 extends AbstractWriter<List<Blueprint>> {
 
         JavaFileObject file = filer().createSourceFile(getFileName(blueprint), blueprint.originatingElements);
 
+        log(jf);
+
         try (Writer w = file.openWriter()) {
             jf.writeTo(w);
         }
     }
 
-    private MethodSpec writeIfaceMethod(Blueprint.TargetMethod method, Blueprint blueprint, FieldSpec delegateField, ClassName command) throws IOException {
+    private MethodSpec writeIfaceMethod(Blueprint.TargetMethod method, Blueprint blueprint, FieldSpec delegateField, ClassName command, boolean hasInterface) throws IOException {
         if (command == null && !blueprint.isTargetInterface) {
             return null;
         }
         Args args = analyzeArgs(method.params);
         MethodSpec.Builder builder = MethodSpec.methodBuilder(method.name)
-                .addAnnotation(Override.class)
                 .returns(TypeName.get(method.returnType))
                 .addModifiers(PUBLIC);
+
+        if (hasInterface) {
+            builder.addAnnotation(Override.class);
+        }
 
         args.addParamsTo(builder);
 

@@ -180,18 +180,22 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
     }
 
     private boolean canInclude(Element candidate) {
-        boolean annotated = MoreElements.isAnnotationPresent(candidate, HysCommand.class);
+        boolean notAnnotated = !MoreElements.isAnnotationPresent(candidate, HysCommand.class);
+        if (candidate.getKind() == ElementKind.CONSTRUCTOR) {
+            validate(notAnnotated, "@HysCommand can only be placed on a method", candidate, HysCommand.class);
+            return false;
+        }
         if (candidate.getKind() != ElementKind.METHOD) {
-            validate(annotated, "@HysCommand can only be placed on a method", candidate, HysCommand.class);
+            validate(notAnnotated, "@HysCommand can only be placed on a method", candidate, HysCommand.class);
             return false;
         }
         ExecutableElement ex = (ExecutableElement) candidate;
         if (!ex.getModifiers().contains(Modifier.PUBLIC)) {
-            validate(annotated, "@HysCommand can only be placed on a public method", ex, HysCommand.class);
+            validate(notAnnotated, "@HysCommand can only be placed on a public method", ex, HysCommand.class);
             return false;
         }
         if (ex.getModifiers().contains(Modifier.STATIC)) {
-            validate(annotated, "@HysCommand cannot be placed on a static method", candidate, HysCommand.class);
+            validate(notAnnotated, "@HysCommand cannot be placed on a static method", candidate, HysCommand.class);
             return false;
         }
         return true;
