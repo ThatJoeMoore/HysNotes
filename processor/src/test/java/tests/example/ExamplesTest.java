@@ -53,6 +53,13 @@ public class ExamplesTest {
                 "ClassLevelSayHiCommand.java", "ClassLevelHystrixWrapper.java");
     }
 
+    @Test
+    public void noInterface_methodLevel() {
+        run("tests/example/nointerface/", "MethodLevel.java",
+                "MethodLevelRiskyCallCommand.java",
+                "MethodLevelAGambleCommand.java");
+    }
+
 
     private void run(String prefix, String source, String... expected) {
         JavaFileObject fileObject = JavaFileObjects.forResource(prefix + source);
@@ -66,7 +73,8 @@ public class ExamplesTest {
                 .that(fileObject)
                 .processedWith(processor)
                 .compilesWithoutError()
-        .and().generatesSources(split.first, split.rest);
+        .and().generatesSources(split.first, split.rest)
+        ;
     }
 
     private static SplitList split(List<JavaFileObject> list) {

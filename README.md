@@ -12,7 +12,7 @@ of your interface, giving you a drop-in solution for taking advantage of Hystrix
 Subject to change at any time.  Here's what we want done before 1.0:
 
 - [x] Basic interface-based usage
-- [ ] Generate wrappers for non-interface classes (possibly working, untested)
+- [x] Generate wrappers for non-interface classes
 - [ ] Automatically handle declared (throws) exceptions.
 - [ ] Support for fallbacks (begun)
 - [ ] Allow for IoC wiring of fallbacks, commands, etc.
@@ -26,6 +26,8 @@ Subject to change at any time.  Here's what we want done before 1.0:
 
 #Basic Usage
 ### Working!
+
+_Note that all of these examples can be seen in action in the [Unit Tests](processor/src/test/java/tests/example/ExampleTest.java)._
 
 First, include the HysNotes annotations and processor dependencies:
 
@@ -125,13 +127,45 @@ public class ClassLevel {
 
 ```
 <sup>[source](processor/src/test/resources/tests/example/nointerface/ClassLevel.java)</sup>
+
+This will generate [ClassLevelSayHiCommand](processor/src/test/resources/tests/example/nointerface/ClassLevelSayHiCommand.java)
+and [ClassLevelHystrixWrapper](processor/src/test/resources/tests/example/nointerface/ClassLevelHystrixWrapper.java). These
+are similar to the output from an annotated interface, except that the HystrixWrapper does not extends the original class.
+
+In addition, you can skip the class-level annotation and use the method-level @HysCommand to just generate commands for
+one or more methods. This will not result in the generation of a wrapper class, just the command classes.
+
+```java
+
+public class MethodLevel {
+
+    @HysCommand
+    public String riskyCall(int arg) {
+        return Integer.toBinaryString(arg);
+    }
+
+    @HysCommand
+    public String aGamble() {
+        return "Cha-Ching!";
+    }
+
+    public int safeBet(String arg) {
+        return arg.length();
+    }
+
+}
+
+```
+<sup>[source](processor/src/test/resources/tests/example/nointerface/MethodLevel.java)</sup>
+
+This will generate [MethodLevelRiskyCallCommand](processor/src/test/resources/tests/example/nointerface/MethodLevelRiskyCallCommand.java)
+and [MethodLevelAGambleCommand](processor/src/test/resources/tests/example/nointerface/MethodLevelAGambleCommand.java). Notice that a wrapper
+class was not generated, just the two command classes.
+
+
 #Configuring Output
 Most of the time, the output of this generation is more than sufficient. However, maybe you want it to be special. Maybe
-you don't like my auto-generated command names. Maybe you want things to live in a different package.  Well, guess what!
-We can do that!
-
-##Class-level
-@HysCommands allows you to configure the
+you don't like my auto-generated command names. Maybe you want things to live in a different package.  Well, we can do that!
 
 #Advanced Interfaces
 

@@ -4,7 +4,6 @@ import com.google.auto.common.MoreElements;
 import com.thatjoemoore.hystrix.annotations.*;
 import com.thatjoemoore.utils.annotations.AbstractAnalyzer;
 import com.thatjoemoore.utils.annotations.ElementsExt;
-import com.thatjoemoore.hystrix.annotations.*;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
@@ -55,39 +54,30 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         return blueprints;
     }
 
-    private Blueprint analyzeClass(TypeElement elem) {
-        TopConfig top = getPackageConfig(elem);
 
-        HysCommands classLevel = elem.getAnnotation(HysCommands.class);
+    private Blueprint analyzeClass(TypeElement elem) {
+        PackageConfig packLevel = getPackageConfig(elem);
+        ClassConfig  classLevel = getClassConfig(elem);
 
         Blueprint bp = new Blueprint();
         bp.baseElement = elem;
-        String groupName = alts(classLevel.group(), top.group, getDefaultGroup(elem));
+        String groupName = alts(classLevel.group, packLevel.group, getDefaultGroup(elem));
 //        bp.threa = alts(classLevel.threadPool(), top.threadPool);
-        bp.packageName = alts(classLevel.generatedPackage(), top.generatedPackage, getDefaultPackage(elem));
-        bp.className = alts(classLevel.wrapperClass(), getDefaultWrapperClass(elem));
-        bp.doWriteWrapper = alts(classLevel.generateWrapper(), top.generateWrapper, true);
+        bp.packageName = alts(classLevel.generatedPackage, packLevel.generatedPackage, getDefaultPackage(elem));
+        bp.className = alts(classLevel.wrapperClass, getDefaultWrapperClass(elem));
+        bp.doWriteWrapper = alts(classLevel.generateWrapper, packLevel.generateWrapper, elem.getKind() == ElementKind.INTERFACE);
 
         bp.isTargetInterface = elem.getKind() == ElementKind.INTERFACE;
         bp.originatingElements = new Element[]{
                 elem
         };
 
-        String prefix = alts(classLevel.commandPrefix(), elem.getSimpleName().toString());
+        String prefix = alts(classLevel.commandPrefix, elem.getSimpleName().toString());
 
-        HysInclusion classInclusion = elem.getAnnotation(HysInclusion.class);
-        HysInclusion.Inclusion incl_class = null;
-        String inclPat_class = null;
-        if (classInclusion != null) {
-            incl_class = classInclusion.inclusion();
-            inclPat_class = classInclusion.inclusionPattern();
-            validateInclusion(elem, classInclusion);
-        }
+        HysInclusion.Inclusion inclusion = alts(classLevel.inclusion, packLevel.inclusion, HysInclusion.Inclusion.ALL);
+        String inclPat = alts(classLevel.inclusionPattern, packLevel.inclusionPattern);
 
-        HysInclusion.Inclusion inclusion = alts(incl_class, top.inclusion, HysInclusion.Inclusion.ALL);
-        String inclPat = alts(inclPat_class, top.inclusionPattern);
-
-        bp.methods = scanMethods(elem, new CmdConfig(groupName, null, prefix, inclusion, inclPat));
+        bp.methods = scanMethods(elem, new CmdConfig(groupName, null, prefix, inclusion, inclPat, classLevel.hasClassConfig));
 
         return bp;
     }
@@ -122,13 +112,15 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         private final String prefix;
         private final HysInclusion.Inclusion inclusion;
         private final String inclPattern;
+        private final boolean hasClassConfig;
 
-        public CmdConfig(String group, String threadPool, String prefix, HysInclusion.Inclusion inclusion, String inclPattern) {
+        public CmdConfig(String group, String threadPool, String prefix, HysInclusion.Inclusion inclusion, String inclPattern, boolean hasClassConfig) {
             this.group = group;
             this.threadPool = threadPool;
             this.prefix = prefix;
             this.inclusion = inclusion;
             this.inclPattern = inclPattern;
+            this.hasClassConfig = hasClassConfig;
         }
     }
 
@@ -136,7 +128,11 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
             TypeElement elem,
             Element method,
             CmdConfig cfg) {
-        if (!shouldInclude(method, cfg.inclusion, cfg.inclPattern)) {
+        HysInclusion.Inclusion inclusion = cfg.inclusion;
+        if (!cfg.hasClassConfig) {
+            inclusion = HysInclusion.Inclusion.EXPLICIT;
+        }
+        if (!shouldInclude(method, inclusion, cfg.inclPattern)) {
             if (canInclude(method) && elem.getKind() == ElementKind.INTERFACE) {
                 Blueprint.TargetMethod tm = new Blueprint.TargetMethod(MoreElements.asExecutable(method));
                 tm.include = false;
@@ -251,8 +247,8 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         return null;
     }
 
-    private TopConfig getPackageConfig(TypeElement elem) {
-        TopConfig cfg = new TopConfig();
+    private PackageConfig getPackageConfig(TypeElement elem) {
+        PackageConfig cfg = new PackageConfig();
 
         PackageElement defs = ElementsExt.getFirstAnnotatedPackage(elem, HysDefaults.class, elements());
         PackageElement inclusion = ElementsExt.getFirstAnnotatedPackage(elem, HysInclusion.class, elements());
@@ -273,6 +269,28 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
             validateInclusion(inclusion, inc);
         }
 
+        return cfg;
+    }
+
+    private ClassConfig getClassConfig(TypeElement elem) {
+        ClassConfig cfg = new ClassConfig();
+        HysCommands hc = elem.getAnnotation(HysCommands.class);
+        if (hc != null) {
+            cfg.hasClassConfig = true;
+            cfg.group = hc.group();
+            cfg.threadPool = hc.threadPool();
+            cfg.commandPrefix = hc.commandPrefix();
+            cfg.generatedPackage = hc.generatedPackage();
+            cfg.wrapperClass = hc.wrapperClass();
+            cfg.generateWrapper = hc.generateWrapper();
+        }
+        HysInclusion inc = elem.getAnnotation(HysInclusion.class);
+        if (inc != null) {
+            cfg.hasClassInclusion = true;
+            cfg.inclusionPattern = inc.inclusionPattern();
+            cfg.inclusion = inc.inclusion();
+            validateInclusion(elem, inc);
+        }
         return cfg;
     }
 
@@ -309,11 +327,11 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         }
     }
 
-    private static final class TopConfig {
+    private static final class PackageConfig {
         String group;
         String threadPool;
         String generatedPackage;
-        boolean generateWrapper;
+        Boolean generateWrapper;
         String inclusionPattern;
         HysInclusion.Inclusion inclusion;
     }
@@ -326,6 +344,19 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
             this.blueprints = blueprints;
             this.elements = elements;
         }
+    }
+
+    private static final class ClassConfig {
+        boolean hasClassConfig;
+        boolean hasClassInclusion;
+        String group;
+        String threadPool;
+        String commandPrefix;
+        String generatedPackage;
+        String wrapperClass;
+        Boolean generateWrapper;
+        String inclusionPattern;
+        HysInclusion.Inclusion inclusion;
     }
 
 }
