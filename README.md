@@ -185,7 +185,7 @@ class is in, it will only be used if the `inherited` property of @HysDefaults is
 
  Name | Package? | Class? | Method? | Description
 ------|----------|--------|---------|-------------
-thing | [x] | [x] | [ ] | stuff, stuff, stuff
+thing | - [x] | - [x] | - [ ] | stuff, stuff, stuff
 
 #Advanced Interfaces
 
