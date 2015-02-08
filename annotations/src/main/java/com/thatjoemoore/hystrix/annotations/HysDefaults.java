@@ -9,6 +9,7 @@ import java.lang.annotation.*;
 @Target(ElementType.PACKAGE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface HysDefaults {
+    boolean inherit() default true;
     String group() default "";
     String threadPool() default "";
 

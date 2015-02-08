@@ -162,10 +162,20 @@ This will generate [MethodLevelRiskyCallCommand](processor/src/test/resources/te
 and [MethodLevelAGambleCommand](processor/src/test/resources/tests/example/nointerface/MethodLevelAGambleCommand.java). Notice that a wrapper
 class was not generated, just the two command classes.
 
-
 #Configuring Output
 Most of the time, the output of this generation is more than sufficient. However, maybe you want it to be special. Maybe
 you don't like my auto-generated command names. Maybe you want things to live in a different package.  Well, we can do that!
+
+##Configuration Levels
+There are three levels at which you can configure the output from the processor: package, class, and method. Each level
+will override the settings of its more-generic counterpart, i.e, class settings override package ones and methods override
+classes and packages.
+
+###Package Defaults
+You can set up default values at a package level with [@HysDefaults](annotations/src/main/java/com/thatjoemoore/hystrix/annotations/HysDefaults.java).
+The processor searches for @HysDefaults starting at the package of the annotated class and moving up the package tree,
+stopping when it finds a package-info.class with the annotation. If the annotated package is not the same one the annotated
+class is in, it will only be used if the `inherited` property of @HysDefaults is `true`, which is the default.
 
 #Advanced Interfaces
 
