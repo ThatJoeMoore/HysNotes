@@ -44,13 +44,13 @@ public class ExamplesTest {
     @Test
     public void simpleInterface() {
         run("tests/example/basic/", "RemoteService.java",
-                "RemoteServiceDoSomethingCommand.java", "RemoteServiceSomethingElseCommand.java", "RemoteServiceHystrixWrapper.java");
+                "RemoteServiceDoSomethingCommand.java", "RemoteServiceSomethingElseCommand.java", "RemoteServiceHystrixFacade.java");
     }
 
     @Test
     public void noInterface_classLevel() {
         run("tests/example/nointerface/", "ClassLevel.java",
-                "ClassLevelSayHiCommand.java", "ClassLevelHystrixWrapper.java");
+                "ClassLevelSayHiCommand.java", "ClassLevelHystrixFacade.java");
     }
 
     @Test

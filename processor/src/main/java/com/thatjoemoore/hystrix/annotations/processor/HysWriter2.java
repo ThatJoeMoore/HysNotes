@@ -225,7 +225,7 @@ class HysWriter2 extends AbstractWriter<List<Blueprint>> {
     }
 
     private void writeInterface(Blueprint blueprint, Map<Blueprint.TargetMethod, ClassName> commands) throws IOException {
-        if (!blueprint.doWriteWrapper) {
+        if (!blueprint.doWriteFacade) {
             return;
         }
 

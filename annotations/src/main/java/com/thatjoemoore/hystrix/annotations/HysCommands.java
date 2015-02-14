@@ -14,6 +14,6 @@ public @interface HysCommands {
     String commandPrefix() default "";
 
     String generatedPackage() default "";
-    String wrapperClass() default "";
-    boolean generateWrapper() default true;
+    String facadeClass() default "";
+    boolean generateFacade() default true;
 }

@@ -14,5 +14,5 @@ public @interface HysDefaults {
     String threadPool() default "";
 
     String generatedPackage() default "";
-    boolean generateWrapper() default true;
+    boolean generateFacade() default true;
 }

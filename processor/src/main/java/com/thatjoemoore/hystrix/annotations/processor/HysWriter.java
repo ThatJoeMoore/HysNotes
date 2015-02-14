@@ -133,7 +133,7 @@ class HysWriter extends AbstractWriter<List<Blueprint>> {
     }
 
     private void writeInterface(Blueprint blueprint) throws IOException {
-        if (!blueprint.doWriteWrapper) {
+        if (!blueprint.doWriteFacade) {
             return;
         }
         JavaFileObject file = filer().createSourceFile(getFileName(blueprint), blueprint.originatingElements);

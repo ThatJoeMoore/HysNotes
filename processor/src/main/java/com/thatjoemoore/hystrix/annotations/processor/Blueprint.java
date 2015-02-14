@@ -17,7 +17,7 @@ class Blueprint {
     public Element baseElement;
     public String packageName;
     public String className;
-    public boolean doWriteWrapper;
+    public boolean doWriteFacade;
     public boolean isTargetInterface;
 
     public List<TargetMethod> methods;

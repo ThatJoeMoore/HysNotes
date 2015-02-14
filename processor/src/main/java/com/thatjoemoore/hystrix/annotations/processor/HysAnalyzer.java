@@ -64,8 +64,8 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         String groupName = alts(classLevel.group, packLevel.group, getDefaultGroup(elem));
 //        bp.threa = alts(classLevel.threadPool(), top.threadPool);
         bp.packageName = alts(classLevel.generatedPackage, packLevel.generatedPackage, getDefaultPackage(elem));
-        bp.className = alts(classLevel.wrapperClass, getDefaultWrapperClass(elem));
-        bp.doWriteWrapper = alts(classLevel.generateWrapper, packLevel.generateWrapper, elem.getKind() == ElementKind.INTERFACE);
+        bp.className = alts(classLevel.facadeClass, getDefaultFacadeClass(elem));
+        bp.doWriteFacade = alts(classLevel.generateFacade, packLevel.generateFacade, elem.getKind() == ElementKind.INTERFACE);
 
         bp.isTargetInterface = elem.getKind() == ElementKind.INTERFACE;
         bp.originatingElements = new Element[]{
@@ -229,8 +229,8 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         return MoreElements.getPackage(elem).getQualifiedName().toString();
     }
 
-    private String getDefaultWrapperClass(TypeElement elem) {
-        return elem.getSimpleName() + "HystrixWrapper";
+    private String getDefaultFacadeClass(TypeElement elem) {
+        return elem.getSimpleName() + "HystrixFacade";
     }
 
     @SafeVarargs
@@ -259,7 +259,7 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
             cfg.threadPool = e2n(hd.threadPool());
             logger().warning("ThreadPool is not yet supported", defs, MoreElements.getAnnotationMirror(defs, HysDefaults.class).orNull());
             cfg.generatedPackage = e2n(hd.generatedPackage());
-            cfg.generateWrapper = hd.generateWrapper();
+            cfg.generateFacade = hd.generateFacade();
         }
 
         if (inclusion != null) {
@@ -281,8 +281,8 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
             cfg.threadPool = hc.threadPool();
             cfg.commandPrefix = hc.commandPrefix();
             cfg.generatedPackage = hc.generatedPackage();
-            cfg.wrapperClass = hc.wrapperClass();
-            cfg.generateWrapper = hc.generateWrapper();
+            cfg.facadeClass = hc.facadeClass();
+            cfg.generateFacade = hc.generateFacade();
         }
         HysInclusion inc = elem.getAnnotation(HysInclusion.class);
         if (inc != null) {
@@ -331,7 +331,7 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         String group;
         String threadPool;
         String generatedPackage;
-        Boolean generateWrapper;
+        Boolean generateFacade;
         String inclusionPattern;
         HysInclusion.Inclusion inclusion;
     }
@@ -353,8 +353,8 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         String threadPool;
         String commandPrefix;
         String generatedPackage;
-        String wrapperClass;
-        Boolean generateWrapper;
+        String facadeClass;
+        Boolean generateFacade;
         String inclusionPattern;
         HysInclusion.Inclusion inclusion;
     }
