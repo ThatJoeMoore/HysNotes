@@ -10,8 +10,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.SOURCE)
 public @interface HysCommand {
 
-    String name() default "";
+    String commandName() default "";
     String group() default "";
+    String generatedPackage() default "";
     String threadPool() default "";
 
 }

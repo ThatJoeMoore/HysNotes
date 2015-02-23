@@ -149,7 +149,7 @@ class HysAnalyzer extends AbstractAnalyzer<List<Blueprint>> {
         String group = null;
         String threadPool = null;
         if (cmd != null) {
-            name = e2n(cmd.name());
+            name = e2n(cmd.commandName());
             group = e2n(cmd.group());
             threadPool = e2n(cmd.group());
         }
